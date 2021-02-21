@@ -32,13 +32,12 @@ def navigate_json(json_obj: Union[list, dict]) -> None:
 
     print()
     if (not isinstance(json_obj, list) and not isinstance(json_obj, dict)) or \
-                                            (isinstance(json_obj, dict) and not json_obj) or \
-                                            (isinstance(json_obj, list) and not json_obj):
+        (isinstance(json_obj, (dict, list)) and not json_obj):
         print("Here's the end value:", json_obj)
     elif isinstance(json_obj, list):
         print(f"This is an array with {len(json_obj)} elements.")
         idx = None
-        while not idx:
+        while idx is None:
             try:
                 idx = input("Please enter an index of the array: ")
                 idx = int(idx)
@@ -62,6 +61,6 @@ def navigate_json(json_obj: Union[list, dict]) -> None:
 
 
 if __name__ == "__main__":
-    json_obj = ask_json()
+    json_object = ask_json()
 
-    navigate_json(json_obj)
+    navigate_json(json_object)
