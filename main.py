@@ -2,7 +2,7 @@
 This module provides functions for navigating through JSON object/file.
 
 To use the implemented functionality, run this module with python in terminal or import and
-utilize the implemented funcions.
+utilize the implemented functions.
 """
 
 import json
@@ -29,12 +29,14 @@ def navigate_json(json_obj: Union[list, dict]) -> None:
     Navigate through the specified json_obg, asking the user on each step what index or key to
     choose until there's an empty array, empty object or a non iterable object.
     """
+
+    print()
     if (not isinstance(json_obj, list) and not isinstance(json_obj, dict)) or \
                                             (isinstance(json_obj, dict) and not json_obj) or \
                                             (isinstance(json_obj, list) and not json_obj):
         print("Here's the end value:", json_obj)
     elif isinstance(json_obj, list):
-        print(f"This is a list with {len(json_obj)} elements.")
+        print(f"This is an array with {len(json_obj)} elements.")
         idx = None
         while not idx:
             try:
@@ -45,7 +47,7 @@ def navigate_json(json_obj: Union[list, dict]) -> None:
                 idx = None
                 print("You should have entered a valid index. Now try again.")
 
-    elif isinstance(json_obj, dict):
+    else:
         print(f"This is a dictionary with {len(json_obj)} pairs. The keys are the following:")
         print(*json_obj.keys(), sep='\n')
 
@@ -57,8 +59,6 @@ def navigate_json(json_obj: Union[list, dict]) -> None:
             except KeyError:
                 key = None
                 print("You should have entered an existing key. Now try again.")
-    else:
-        print("This is an unknown type. So navigation stops...")
 
 
 if __name__ == "__main__":
