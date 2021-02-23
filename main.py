@@ -7,6 +7,7 @@ utilize the implemented functions.
 
 import json
 from typing import Union
+import os
 
 
 def ask_json() -> Union[dict, list]:
@@ -24,11 +25,16 @@ def ask_json() -> Union[dict, list]:
     return json_obj
 
 
-def navigate_json(json_obj: Union[list, dict]) -> None:
+def navigate_json(json_obj: Union[list, dict], path: str = "") -> None:
     """
     Navigate through the specified json_obg, asking the user on each step what index or key to
     choose until there's an empty array, empty object or a non iterable object.
     """
+
+    os.system("cls") if os.name == 'nt' else os.system("clear")
+
+    if path:
+        print("Path is " + path)
 
     print()
     if (not isinstance(json_obj, list) and not isinstance(json_obj, dict)) or \
@@ -41,20 +47,27 @@ def navigate_json(json_obj: Union[list, dict]) -> None:
             try:
                 idx = input("Please enter an index of the array: ")
                 idx = int(idx)
-                navigate_json(json_obj[idx])
+
+                if idx < 0:
+                    raise ValueError
+
+                json_obj = json_obj[idx]
+                path += "/" + str(idx)
+                navigate_json(json_obj, path)
             except (ValueError, IndexError):
                 idx = None
                 print("You should have entered a valid index. Now try again.")
-
     else:
         print(f"This is a dictionary with {len(json_obj)} pairs. The keys are the following:")
         print(*json_obj.keys(), sep='\n')
 
         key = None
-        while not key:
+        while key is None:
             try:
                 key = input("Please, enter an existing key: ")
-                navigate_json(json_obj[key])
+                json_obj = json_obj[key]
+                path += "/" + key
+                navigate_json(json_obj, path)
             except KeyError:
                 key = None
                 print("You should have entered an existing key. Now try again.")
